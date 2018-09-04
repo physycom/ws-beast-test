@@ -31,3 +31,4 @@
 *.out
 *.app
 [Bb]uild/
+[Bb]in/

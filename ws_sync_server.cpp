@@ -46,11 +46,12 @@ do_session(tcp::socket& socket)
 
       // Read a message
       ws.read(buffer);
+      std::cout << "Received : " << boost::beast::buffers(buffer.data()) << std::endl;
 
       // Echo the message back
-      ws.text(ws.got_text() + " *** ");
+      boost::beast::ostream(buffer) << " (by the server)";
+      ws.text(ws.got_text());
       ws.write(buffer.data());
-      std::cout << "Received : " << boost::beast::buffers(buffer.data()) << std::endl;
     }
   }
   catch(boost::system::system_error const& se)
