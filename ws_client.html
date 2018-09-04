@@ -6,14 +6,16 @@
       {
         if ("WebSocket" in window)
         {
+          var inaddr = document.getElementById("inaddr").value;
+          var inmsg = document.getElementById("inmsg").value;
+
           // Let us open a web socket
-          var ws = new WebSocket("ws://127.0.0.1:12345");
+          var ws = new WebSocket("ws://" + inaddr);
 
           ws.onopen = function()
           {
             // Web Socket is connected, send data using send()
-            ws.send("cuore del mio cuore");
-            alert("Message is sent...");
+            ws.send(inmsg);
           };
 
           ws.onmessage = function (evt) {
@@ -21,8 +23,8 @@
             alert("Message received : " + received_msg);
           };
 
-          ws.onclose = function() {
-            // websocket is closed.
+          ws.onclose = function()
+          {
             alert("Connection is closed...");
           };
         }
@@ -34,6 +36,10 @@
     </script>
   </head>
 <body>
+  <label for="inaddr">Input Address (ipv4:port)</label>
+  <input name="InputAddr" type="text" maxlength="512" id="inaddr" class="searchField"/><br>
+  <label for="message">Input Message</label>
+  <input name="InputMsg" type="text" maxlength="512" id="inmsg" class="searchField"/><br>
   <div id = "sse">
     <a href = "javascript:WebSocketTest()">Run Test</a>
   </div>
