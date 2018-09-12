@@ -13,19 +13,19 @@ matrix:
       compiler: gcc
       name: macOS - gcc@6
       env:
-        - MATRIX_EVAL="brew update && brew cask uninstall oclint && brew install gcc@5 && CC=gcc-6 && CXX=g++-6"
+        - MATRIX_EVAL="brew update && brew cask uninstall oclint && brew install gcc@6 && CC=gcc-6 && CXX=g++-6"
 
     - os: osx
       compiler: gcc
       name: macOS - gcc@7
       env:
-        - MATRIX_EVAL="brew update && brew cask uninstall oclint && brew install gcc@5 && CC=gcc-7 && CXX=g++-7"
+        - MATRIX_EVAL="brew update && brew cask uninstall oclint && brew install gcc@7 && CC=gcc-7 && CXX=g++-7"
 
     - os: osx
       compiler: gcc
       name: macOS - gcc
       env:
-        - MATRIX_EVAL="brew update && brew cask uninstall oclint && brew install gcc@5 && CC=gcc-8 && CXX=g++-8"
+        - MATRIX_EVAL="brew update && brew cask uninstall oclint && brew install gcc && CC=gcc-8 && CXX=g++-8"
 
     - os: osx
       compiler: gcc
@@ -131,8 +131,6 @@ matrix:
       addons:
         apt:
           update: true
-          packages:
-            - gfortran
       env:
         - MATRIX_EVAL=""
 

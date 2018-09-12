@@ -12,7 +12,7 @@ find_package(Boost 1.66.0 COMPONENTS system)
 include_directories(${Boost_INCLUDE_DIRS})
 
 add_executable(ws_sync_client         "${CMAKE_SOURCE_DIR}/ws_sync_client.cpp")
-target_link_libraries(ws_sync_client  Boost::system)
-
 add_executable(ws_sync_server         "${CMAKE_SOURCE_DIR}/ws_sync_server.cpp")
-target_link_libraries(ws_sync_server  Boost::system)
+
+target_link_libraries(ws_sync_client ${Boost_LIBRARIES})
+target_link_libraries(ws_sync_server ${Boost_LIBRARIES})
