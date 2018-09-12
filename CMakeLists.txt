@@ -8,11 +8,13 @@ else()
    message(STATUS "Unable to find physycom settings file")
 endif()
 
-find_package(Boost 1.66.0 COMPONENTS system)
+find_package(Boost 1.66.0 COMPONENTS system REQUIRED)
+find_package(Threads REQUIRED)
+
 include_directories(${Boost_INCLUDE_DIRS})
 
 add_executable(ws_sync_client         "${CMAKE_SOURCE_DIR}/ws_sync_client.cpp")
 add_executable(ws_sync_server         "${CMAKE_SOURCE_DIR}/ws_sync_server.cpp")
 
-target_link_libraries(ws_sync_client ${Boost_LIBRARIES})
-target_link_libraries(ws_sync_server ${Boost_LIBRARIES})
+target_link_libraries(ws_sync_client ${Boost_LIBRARIES} Threads::Threads)
+target_link_libraries(ws_sync_server ${Boost_LIBRARIES} Threads::Threads)
