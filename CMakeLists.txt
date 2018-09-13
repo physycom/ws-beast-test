@@ -8,15 +8,15 @@ else()
    message(STATUS "Unable to find physycom settings file")
 endif()
 
-find_package(Boost COMPONENTS system coroutine)
+find_package(Boost 1.66.0 COMPONENTS coroutine system REQUIRED)
 find_package(Threads REQUIRED)
 
 include_directories(${Boost_INCLUDE_DIRS})
 
 add_executable(ws_sync_client         "${CMAKE_SOURCE_DIR}/ws_sync_client.cpp")
-target_link_libraries(ws_sync_client  Boost::system Threads::Threads)
+target_link_libraries(ws_sync_client  ${Boost_LIBRARIES} Threads::Threads)
 add_executable(ws_sync_server         "${CMAKE_SOURCE_DIR}/ws_sync_server.cpp")
-target_link_libraries(ws_sync_server  Boost::system Threads::Threads)
+target_link_libraries(ws_sync_server  ${Boost_LIBRARIES} Threads::Threads)
 
 add_executable(ws_coro_server         "${CMAKE_SOURCE_DIR}/ws_coro_server.cpp")
-target_link_libraries(ws_coro_server  Boost::system Boost::coroutine)
+target_link_libraries(ws_coro_server  ${Boost_LIBRARIES})
