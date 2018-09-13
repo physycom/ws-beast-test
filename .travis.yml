@@ -1,0 +1,195 @@
+language: cpp
+
+matrix:
+  include:
+
+    - os: osx
+      compiler: gcc
+      name: macOS - gcc@5
+      env:
+        - MATRIX_EVAL="brew update && brew cask uninstall oclint && brew install gcc@5 && CC=gcc-5 && CXX=g++-5"
+
+    - os: osx
+      compiler: gcc
+      name: macOS - native gcc (llvm backend)
+      env:
+        - MATRIX_EVAL=""
+
+    - os: osx
+      compiler: clang
+      name: macOS - native clang
+      env:
+        - MATRIX_EVAL=""
+
+    - os: linux
+      compiler: clang
+      name: ubuntu - native clang
+      addons:
+        apt:
+          update: true
+      env:
+        - MATRIX_EVAL=""
+
+    - os: linux
+      compiler: clang
+      name: ubuntu - clang@3.6
+      addons:
+        apt:
+          update: true
+          packages:
+            - clang-3.6
+      env:
+        - MATRIX_EVAL="CC=clang-3.6 && CXX=clang++-3.6"
+
+    - os: linux
+      compiler: clang
+      name: ubuntu - clang@3.8
+      addons:
+        apt:
+          update: true
+          sources:
+            - llvm-toolchain-precise-3.8
+          packages:
+            - clang-3.8
+      env:
+        - MATRIX_EVAL="CC=clang-3.8 && CXX=clang++-3.8"
+
+    - os: linux
+      compiler: clang
+      name: ubuntu - clang@3.9
+      addons:
+        apt:
+          update: true
+          sources:
+            - llvm-toolchain-trusty-3.9
+          packages:
+            - clang-3.9
+      env:
+        - MATRIX_EVAL="CC=clang-3.9 && CXX=clang++-3.9"
+
+    - os: linux
+      compiler: clang
+      name: ubuntu - clang@4.0
+      addons:
+        apt:
+          update: true
+          sources:
+            - llvm-toolchain-trusty-4.0
+          packages:
+            - clang-4.0
+      env:
+        - MATRIX_EVAL="CC=clang-4.0 && CXX=clang++-4.0"
+
+    - os: linux
+      compiler: clang
+      name: ubuntu - clang@5.0
+      addons:
+        apt:
+          update: true
+          sources:
+            - llvm-toolchain-trusty-5.0
+          packages:
+            - clang-5.0
+      env:
+        - MATRIX_EVAL="CC=clang-5.0 && CXX=clang++-5.0"
+
+    - os: linux
+      compiler: clang
+      name: ubuntu - clang@6.0
+      addons:
+        apt:
+          update: true
+          sources:
+            - llvm-toolchain-trusty-6.0
+            - ubuntu-toolchain-r-test
+          packages:
+            - clang-6.0
+      env:
+        - MATRIX_EVAL="CC=clang-6.0 && CXX=clang++-6.0"
+
+    - os: linux
+      compiler: gcc
+      name: ubuntu - native gcc
+      addons:
+        apt:
+          update: true
+      env:
+        - MATRIX_EVAL=""
+
+    - os: linux
+      compiler: gcc
+      name: ubuntu - gcc@4.9
+      addons:
+        apt:
+          update: true
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-4.9
+      env:
+         - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
+
+    - os: linux
+      compiler: gcc
+      name: ubuntu - gcc@5.0
+      addons:
+        apt:
+          update: true
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-5
+      env:
+         - MATRIX_EVAL="CC=gcc-5 && CXX=g++-5"
+
+    - os: linux
+      compiler: gcc
+      name: ubuntu - gcc@6.0
+      addons:
+        apt:
+          update: true
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-6
+      env:
+        - MATRIX_EVAL="CC=gcc-6 && CXX=g++-6"
+
+    - os: linux
+      compiler: gcc
+      name: ubuntu - gcc@7.0
+      addons:
+        apt:
+          update: true
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-7
+      env:
+        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+
+    - os: linux
+      compiler: gcc
+      name: ubuntu - gcc@8.0
+      addons:
+        apt:
+          update: true
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-8
+      env:
+        - MATRIX_EVAL="CC=gcc-8 && CXX=g++-8"
+
+before_install:
+  - eval "${MATRIX_EVAL}"
+
+install:
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then travis_wait 45 ./install_boost.sh ;fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ADDITIONAL_CMAKE_SETTINGS="-DBOOST_ROOT:PATHNAME=/home/travis/boost -DBoost_NO_BOOST_CMAKE=TRUE" ;fi
+  - git clone https://github.com/physycom/sysconfig.git
+  - export WORKSPACE=$(pwd)
+  - mkdir build && cd build
+
+script:
+  - cmake .. ${ADDITIONAL_CMAKE_SETTINGS} && cmake --build .

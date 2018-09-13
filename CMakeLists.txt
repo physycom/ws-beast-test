@@ -9,13 +9,14 @@ else()
 endif()
 
 find_package(Boost COMPONENTS system coroutine)
+find_package(Threads REQUIRED)
+
 include_directories(${Boost_INCLUDE_DIRS})
 
 add_executable(ws_sync_client         "${CMAKE_SOURCE_DIR}/ws_sync_client.cpp")
-target_link_libraries(ws_sync_client  Boost::system)
-
+target_link_libraries(ws_sync_client  Boost::system Threads::Threads)
 add_executable(ws_sync_server         "${CMAKE_SOURCE_DIR}/ws_sync_server.cpp")
-target_link_libraries(ws_sync_server  Boost::system)
+target_link_libraries(ws_sync_server  Boost::system Threads::Threads)
 
 add_executable(ws_coro_server         "${CMAKE_SOURCE_DIR}/ws_coro_server.cpp")
 target_link_libraries(ws_coro_server  Boost::system Boost::coroutine)
