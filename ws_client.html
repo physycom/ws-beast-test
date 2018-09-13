@@ -6,19 +6,29 @@
       {
         if ("WebSocket" in window)
         {
-          var inaddr = document.getElementById("inaddr").value;
-          var inmsg = document.getElementById("inmsg").value;
+          var inaddr = document.getElementById("inaddr").value == "" ? "127.0.0.1:12345" : document.getElementById("inaddr").value;
+          var inmsg = document.getElementById("inmsg").value == "" ? "Hello WEBSocket!!!" : document.getElementById("inmsg").value;
+          var func = document.getElementsByName("infunc");
+          for (var i = 0, length = func.length; i < length; ++i)
+          {
+            if (func[i].checked)
+            {
+              var infunc = func[i].value;
+              break;
+            }
+          }
+          //alert(inaddr + " - " + inmsg + " - " + infunc);
 
           // Let us open a web socket
           var ws = new WebSocket("ws://" + inaddr);
-
           ws.onopen = function()
           {
             // Web Socket is connected, send data using send()
             ws.send(inmsg);
           };
 
-          ws.onmessage = function (evt) {
+          ws.onmessage = function (evt)
+          {
             var received_msg = evt.data;
             alert("Message received : " + received_msg);
           };
@@ -35,13 +45,17 @@
       }
     </script>
   </head>
-<body>
-  <label for="inaddr">Input Address (ipv4:port)</label>
-  <input name="InputAddr" type="text" maxlength="512" id="inaddr" class="searchField"/><br>
-  <label for="message">Input Message</label>
-  <input name="InputMsg" type="text" maxlength="512" id="inmsg" class="searchField"/><br>
-  <div id = "sse">
-    <a href = "javascript:WebSocketTest()">Run Test</a>
-  </div>
-</body>
+
+  <body>
+    <label for="inaddr">Input Address (ipv4:port)</label>
+    <input name="InputAddr" type="text" maxlength="512" id="inaddr" class="searchField"/><br>
+    <label for="message">Input Message</label>
+    <input name="InputMsg" type="text" maxlength="512" id="inmsg" class="searchField"/><br>
+    <form action="">
+      <input type="radio" name="infunc" checked/> Time<br>
+      <input type="radio" name="infunc"/> RNG<br>
+      <input type="radio" name="infunc"/> Echo
+    </form>
+    <button onclick="javascript:WebSocketTest()" style="height:30%;width:10%;margin-left:45%;background-color:#666666">Run</button>
+  </body>
 </html>

@@ -28,8 +28,7 @@ namespace websocket = boost::beast::websocket;  // from <boost/beast/websocket.h
 //------------------------------------------------------------------------------
 
 // Echoes back all received WebSocket messages
-void
-do_session(tcp::socket& socket)
+void do_session(tcp::socket& socket)
 {
   try
   {
@@ -46,7 +45,11 @@ do_session(tcp::socket& socket)
 
       // Read a message
       ws.read(buffer);
-      std::cout << "Received : " << boost::beast::buffers(buffer.data()) << std::endl;
+
+      std::ostringstream os;
+      os << boost::beast::buffers(buffer.data());
+      std::string msg = os.str();
+      std::cout << "Message received : " << msg << std::endl;
 
       // Echo the message back
       boost::beast::ostream(buffer) << " (by the server)";
@@ -82,7 +85,7 @@ int main(int argc, char* argv[])
       return EXIT_FAILURE;
     }
     auto const address = boost::asio::ip::make_address(argv[1]);
-    auto const port = static_cast<unsigned short>(std::atoi(argv[2]));
+    auto const port = static_cast<unsigned short>(std::stoi(argv[2]));
 
     // The io_context is required for all I/O
     boost::asio::io_context ioc{1};
@@ -98,9 +101,7 @@ int main(int argc, char* argv[])
       acceptor.accept(socket);
 
       // Launch the session, transferring ownership of the socket
-      std::thread{std::bind(
-        &do_session,
-        std::move(socket))}.detach();
+      std::thread{std::bind(&do_session, std::move(socket))}.detach();
     }
   }
   catch (const std::exception& e)
