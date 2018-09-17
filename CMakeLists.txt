@@ -19,4 +19,4 @@ add_executable(ws_sync_server         "${CMAKE_SOURCE_DIR}/ws_sync_server.cpp")
 target_link_libraries(ws_sync_server  ${Boost_LIBRARIES} Threads::Threads)
 
 add_executable(ws_coro_server         "${CMAKE_SOURCE_DIR}/ws_coro_server.cpp")
-target_link_libraries(ws_coro_server  ${Boost_LIBRARIES})
+target_link_libraries(ws_coro_server  ${Boost_LIBRARIES} Threads::Threads)
